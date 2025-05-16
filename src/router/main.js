@@ -47,5 +47,15 @@ export default [{
       layout: ExampleLayout,
       middleware: [AuthMiddleware],
     },
-  }
+  },
+  // {
+  //   path: 'dashboard',
+  //   name: 'dashboard',
+  //   component: () => import('@/views/dashboard/index.vue'),
+  //   meta: {
+  //     title: 'Dashboard',
+  //     layout: ExampleLayout,
+  //     middleware: [AuthMiddleware],
+  //   },
+  // }
 ]
