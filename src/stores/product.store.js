@@ -14,7 +14,7 @@ export const useProductStore = defineStore({
             let url = `${baseUrl}/product`
 
             const products = await axiosWrapper.get(url);
-
+            console.log('products', products);
             if (products) {
                 this.products = products.data
             }
