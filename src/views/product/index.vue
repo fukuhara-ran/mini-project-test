@@ -66,13 +66,16 @@
           <td class="px-4 py-2 text-left border border-gray-300">
             {{ product.price }}
           </td>
-          <td class="px-6 py-4 border border-gray-300">
+          <td class="px-6 py-4 border border-gray-300 space-x-2">
             <ButtonPrimary @click="updateData(product)">
               <i class="ri-edit-box-line"></i>
             </ButtonPrimary>
             <ButtonDanger class="ml-2" @click="deleteData(product.id)">
               <i class="ri-delete-bin-line"></i>
             </ButtonDanger>
+            <ButtonPrimary @click="addToCart(product)" class="bg-green-600 hover:bg-green-700">
+              <i class="ri-shopping-cart-add-line"></i>
+            </ButtonPrimary>
           </td>
         </tr>
       </tbody>
@@ -83,12 +86,14 @@
 <script>
 import { useProductStore } from "@/stores/product.store.js";
 import { useCategoryStore } from "@/stores/category.store.js";
+import { useCartStore } from '@/stores/cart.store.js';
 
 export default {
   data() {
     return {
       productStore: useProductStore(),
       categoryStore: useCategoryStore(),
+      cartStore: useCartStore(),
     };
   },
   computed: {
@@ -135,6 +140,16 @@ export default {
       this.productStore.products = product;
 
       // this.$router.push("/user/update");
+    },
+    addToCart(product) {
+      this.cartStore.addToCart(product);
+      this.$swal({
+        title: "Added to Cart!",
+        text: `${product.name} has been added to your cart.`,
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     },
   },
 };
