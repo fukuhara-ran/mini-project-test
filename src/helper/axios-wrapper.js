@@ -17,7 +17,7 @@ function request(method) {
       headers: authHeader(url),
     };
 
-    if (body) {
+    if (body instanceof FormData) {
       if (contentType == 'application/json') {
         requestOptions.headers['Content-Type'] = 'application/json';
         requestOptions.data = JSON.stringify(body);

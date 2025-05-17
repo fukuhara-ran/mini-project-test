@@ -2,6 +2,8 @@ import HomeView from '@/views/home/index.vue'
 import UserView from '@/views/user/index.vue'
 import UserCreateView from '@/views/user/create.vue'
 import UserUpdateView from '@/views/user/update.vue'
+import ProductView from '@/views/product/index.vue'
+import ProductCreateView from '@/views/product/create.vue'
 
 import ExampleLayout from '@/layouts/ExampleLayout.vue';
 
@@ -44,6 +46,26 @@ export default [{
     component: UserUpdateView,
     meta: {
       title: 'User Update',
+      layout: ExampleLayout,
+      middleware: [AuthMiddleware],
+    },
+  },
+  {
+    path: '/product',
+    name: 'product',
+    component: ProductView,
+    meta: {
+      title: 'Product',
+      layout: ExampleLayout,
+      middleware: [AuthMiddleware],
+    },
+  },
+  {
+    path: '/product/create',
+    name: 'product.create',
+    component: ProductCreateView,
+    meta: {
+      title: 'Product Create',
       layout: ExampleLayout,
       middleware: [AuthMiddleware],
     },
