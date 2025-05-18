@@ -5,6 +5,9 @@ import UserUpdateView from "@/views/user/update.vue";
 import ProductView from "@/views/product/index.vue";
 import ProductCreateView from "@/views/product/create.vue";
 import CartView from "@/views/cart/index.vue";
+import CheckoutView from "@/views/checkout/index.vue";
+import TransactionConfirmationView from "@/views/checkout/confirmation.vue";
+import TransactionListView from "@/views/checkout/list.vue";
 
 import ExampleLayout from "@/layouts/ExampleLayout.vue";
 
@@ -81,5 +84,35 @@ export default [
       layout: ExampleLayout,
       middleware: [AuthMiddleware],
     },
+  },
+  {
+    path: "/checkout",
+    name: "checkout",
+    component: CheckoutView,
+    meta: {
+      title: "Checkout",
+      layout: ExampleLayout,
+      middleware: [AuthMiddleware]
+    }
+  },
+  {
+    path: "/transaction/confirmation/:id",
+    name: "transaction-confirmation",
+    component: TransactionConfirmationView,
+    meta: {
+      title: "Confirmation",
+      layout: ExampleLayout,
+      middleware: [AuthMiddleware]
+    }
+  },
+  {
+    path: "/transaction/list",
+    name: "transaction-list",
+    component: TransactionListView,
+    meta: {
+      title: "List",
+      layout: ExampleLayout,
+      middleware: [AuthMiddleware]
+    }
   },
 ];

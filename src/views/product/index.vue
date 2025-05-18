@@ -22,18 +22,71 @@
           </option>
         </select>
       </div>
-      <ButtonPrimary
+      <ButtonDanger
         @click="clearFilter"
         v-if="productStore.filterCategoryId"
         class="py-2 px-3 text-xs"
       >
         Clear Filter
+      </ButtonDanger>
+      <ButtonPrimary
+        @click="openCategoryModal"
+        class="bg-yellow-500 hover:bg-yellow-600 py-2 px-3 text-xs"
+      >
+        Add Category
       </ButtonPrimary>
     </div>
     <ButtonPrimary @click="$router.push('/product/create')">
       Add Product
     </ButtonPrimary>
   </div>
+
+  <!-- Modal untuk menambah kategori baru -->
+  <div
+    v-if="showCategoryModal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+  >
+    <div class="bg-white rounded-lg p-6 w-full max-w-md">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-medium">Add New Category</h2>
+        <button
+          @click="closeCategoryModal"
+          class="text-gray-400 hover:text-gray-600"
+        >
+          <i class="ri-close-line text-xl"></i>
+        </button>
+      </div>
+
+      <form @submit.prevent="createCategory">
+        <div class="mb-4">
+          <label
+            for="categoryName"
+            class="block mb-2 text-sm font-medium text-gray-900"
+          >
+            Category Name <span class="text-red-600">*</span>
+          </label>
+          <input
+            v-model="newCategory.name"
+            type="text"
+            id="categoryName"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            placeholder="Enter category name"
+            required
+          />
+        </div>
+
+        <div class="flex justify-end space-x-2">
+          <ButtonDanger @click="closeCategoryModal" type="button">
+            Cancel
+          </ButtonDanger>
+          <ButtonPrimary type="submit" :disabled="isLoading">
+            {{ isLoading ? "Saving..." : "Save Category" }}
+          </ButtonPrimary>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div class="relative overflow-x-auto mt-5">
     <table class="w-full text-sm text-left text-gray-500">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -66,15 +119,18 @@
           <td class="px-4 py-2 text-left border border-gray-300">
             {{ product.price }}
           </td>
-          <td class="px-6 py-4 border border-gray-300 space-x-2">
+          <td class="px-6 py-4 border border-gray-300 space-x-2 w-96">
             <ButtonPrimary @click="updateData(product)">
               <i class="ri-edit-box-line"></i>
             </ButtonPrimary>
             <ButtonDanger class="ml-2" @click="deleteData(product.id)">
               <i class="ri-delete-bin-line"></i>
             </ButtonDanger>
-            <ButtonPrimary @click="addToCart(product)" class="bg-green-600 hover:bg-green-700">
-              <i class="ri-shopping-cart-add-line"></i>
+            <ButtonPrimary
+              @click="addToCart(product)"
+              class="bg-green-400 hover:bg-green-600"
+            >
+              <i class="ri-shopping-cart-line"></i>
             </ButtonPrimary>
           </td>
         </tr>
@@ -86,7 +142,7 @@
 <script>
 import { useProductStore } from "@/stores/product.store.js";
 import { useCategoryStore } from "@/stores/category.store.js";
-import { useCartStore } from '@/stores/cart.store.js';
+import { useCartStore } from "@/stores/cart.store.js";
 
 export default {
   data() {
@@ -94,6 +150,11 @@ export default {
       productStore: useProductStore(),
       categoryStore: useCategoryStore(),
       cartStore: useCartStore(),
+      showCategoryModal: false,
+      isLoading: false,
+      newCategory: {
+        name: "",
+      },
     };
   },
   computed: {
@@ -150,6 +211,57 @@ export default {
         timer: 1500,
         showConfirmButton: false,
       });
+    },
+    openCategoryModal() {
+      this.showCategoryModal = true;
+      this.newCategory.name = "";
+    },
+    closeCategoryModal() {
+      this.showCategoryModal = false;
+    },
+    async createCategory() {
+      if (!this.newCategory.name.trim()) {
+        this.$swal({
+          title: "Error!",
+          text: "Category name is required",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+        return;
+      }
+
+      try {
+        this.isLoading = true;
+
+        const result = await this.categoryStore.add({
+          name: this.newCategory.name.trim(),
+        });
+
+        if (result) {
+          // Refresh daftar kategori
+          await this.categoryStore.fetch();
+
+          this.$swal({
+            title: "Success!",
+            text: "Category has been added successfully",
+            icon: "success",
+            timer: 1500,
+            showConfirmButton: false,
+          });
+
+          this.closeCategoryModal();
+        }
+      } catch (error) {
+        console.error("Error adding category:", error);
+        this.$swal({
+          title: "Error!",
+          text: "Failed to add category",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      } finally {
+        this.isLoading = false;
+      }
     },
   },
 };

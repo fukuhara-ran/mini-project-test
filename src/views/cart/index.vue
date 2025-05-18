@@ -18,9 +18,9 @@
               <th scope="col" class="px-6 py-3">Produk</th>
               <th scope="col" class="px-6 py-3">Nama</th>
               <th scope="col" class="px-6 py-3">Harga</th>
-              <th scope="col" class="px-6 py-3">Jumlah</th>
-              <th scope="col" class="px-6 py-3">Total</th>
-              <th scope="col" class="px-6 py-3">Aksi</th>
+              <th scope="col" class="px-6 py-3 text-center">Jumlah</th>
+              <th scope="col" class="px-6 py-3 text-center">Total</th>
+              <th scope="col" class="px-6 py-3 text-center">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -29,18 +29,22 @@
               :key="item.id"
               class="bg-white border-b hover:bg-gray-50"
             >
-              <td class="px-6 py-4">
+              <td class="px-6 py-4 border-r-[1px]">
                 <img
                   :src="item.picture_url"
                   alt="Gambar Produk"
                   class="w-16 h-16 object-cover"
                 />
               </td>
-              <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+              <td
+                class="px-6 py-4 text-gray-900 whitespace-nowrap border-r-[1px]"
+              >
                 {{ item.name }}
               </td>
-              <td class="px-6 py-4">Rp {{ formatPrice(item.price) }}</td>
-              <td class="px-6 py-4">
+              <td class="px-6 py-4 border-r-[1px]">
+                {{ formatPrice(item.price) }}
+              </td>
+              <td class="px-6 py-4 w-8 border-r-[1px]">
                 <div class="flex items-center space-x-3">
                   <button
                     @click="decreaseQuantity(item)"
@@ -57,10 +61,10 @@
                   </button>
                 </div>
               </td>
-              <td class="px-6 py-4 font-medium">
-                Rp {{ formatPrice(item.price * item.quantity) }}
+              <td class="px-7 py-4 font-medium text-center border-r-[1px]">
+                {{ formatPrice(item.price * item.quantity) }}
               </td>
-              <td class="px-6 py-4">
+              <td class="px-6 py-4 text-center">
                 <ButtonDanger @click="removeItem(item.id)" class="py-1 px-2">
                   <i class="ri-delete-bin-line"></i>
                 </ButtonDanger>
@@ -71,7 +75,7 @@
             <tr class="font-semibold text-gray-900">
               <td colspan="4" class="px-6 py-3 text-right">Total Belanja:</td>
               <td class="px-6 py-3">
-                Rp {{ formatPrice(cartStore.totalPrice) }}
+                {{ formatPrice(cartStore.totalPrice) }}
               </td>
               <td></td>
             </tr>
@@ -155,11 +159,7 @@ export default {
       });
     },
     checkout() {
-      this.$swal({
-        title: "Checkout",
-        text: "Fitur checkout sedang dalam pengembangan",
-        icon: "info",
-      });
+      this.$router.push("/checkout");
     },
   },
 };
