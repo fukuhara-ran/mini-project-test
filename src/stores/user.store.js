@@ -11,7 +11,7 @@ export const useUserStore = defineStore({
     }),
     actions: {
         async fetch() {
-            let url = `${baseUrl}/user`
+            let url = `${baseUrl}/profile`
 
             const users = await axiosWrapper.get(url);
 
@@ -20,17 +20,17 @@ export const useUserStore = defineStore({
             }
         },
         async add(data) {
-          const user = await axiosWrapper.post(`${baseUrl}/user`, data, true);
+          const user = await axiosWrapper.post(`${baseUrl}/profile`, data, true);
 
           this.user = user.data
 
           return user
         },
         async update(id, data) {
-          return await axiosWrapper.put(`${baseUrl}/user/${id}`, data, true);
+          return await axiosWrapper.put(`${baseUrl}/profile/${id}`, data, true);
         },
         async delete(id) {
-          return await axiosWrapper.delete(`${baseUrl}/user/${id}`, {}, true);
+          return await axiosWrapper.delete(`${baseUrl}/profile/${id}`, {}, true);
         },
     },
 });
