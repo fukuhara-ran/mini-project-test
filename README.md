@@ -1,8 +1,6 @@
-# Vue 3 Setup
-
-This template should help get you started developing with Vue 3 in Vite.
-
-If you need a backend, check this out [express-setup-v2](https://gitlab.com/mtaufiikh/express-setup-v2).
+## Created by: Reksa Panduasa
+# Link:
+```https://mini-project-test-peach.vercel.app/```
 
 
 ## Official Documentation
